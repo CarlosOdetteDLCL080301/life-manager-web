@@ -1,0 +1,69 @@
+# =========================
+# 1. SECRETOS Y CREDENCIALES (¡VITAL!)
+# =========================
+.env
+.env.*
+.env_prod
+*.pem
+id_rsa
+id_ed25519
+
+# =========================
+# 2. PYTHON Y BACKEND
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entornos Virtuales
+venv/
+.venv/
+env/
+.env/
+
+# =========================
+# 3. FRONTEND (Preparado para el futuro)
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+.next/
+.nuxt/
+
+# =========================
+# 4. SISTEMAS OPERATIVOS Y EDITORES
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

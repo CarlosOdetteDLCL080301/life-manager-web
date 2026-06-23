@@ -1,0 +1,162 @@
+:root {
+    /* Tu paleta de colores base */
+    --color1: #1306fb;
+    --color2: #0f04cf;
+    --color3: #0a03a3;
+    --color4: #050178;
+    --color5: #00004c;
+    
+    --light-bg: #f4f7f6;
+    --card-bg: #ffffff;
+    --text-dark: #333333;
+    --text-muted: #666666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--light-bg);
+    /* Centrado absoluto en la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Contenedor principal: ahora es responsivo y más ancho para PC */
+.app-container {
+    width: 100%;
+    max-width: 900px; /* Tamaño ideal para que en PC no se vea aplastado */
+    background-color: var(--light-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+/* Cabecera centrada */
+.app-header {
+    background: linear-gradient(135deg, var(--color1), var(--color3));
+    padding: 50px 30px 100px 30px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    display: flex;
+    justify-content: center; /* Centramos el contenido horizontalmente */
+    text-align: center;      /* Centramos el texto */
+    color: white;
+}
+
+.user-profile {
+    display: flex;
+    flex-direction: column; /* Apilamos la imagen y el texto */
+    align-items: center;
+    gap: 15px;
+    max-width: 600px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.8);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.greeting h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.greeting p {
+    font-size: 1rem;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* Tarjeta principal superpuesta */
+.main-content {
+    padding: 0 20px;
+    margin-top: -70px;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.menu-card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Grid Responsivo: Se adapta solo dependiendo del ancho (Móvil vs PC) */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 30px 20px;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: transform 0.2s, color 0.2s;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    color: var(--color1);
+}
+
+.icon-container {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    margin-bottom: 12px;
+    font-size: 2rem;
+    background: rgba(19, 6, 251, 0.05); /* Fondo sutil basado en tu color1 */
+    color: var(--color2); /* Icono con tu color2 */
+    transition: background 0.3s, color 0.3s;
+}
+
+.menu-item:hover .icon-container {
+    background: var(--color1);
+    color: white;
+}
+
+.menu-item span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.creator-footer {
+    text-align: center;
+    padding: 40px 20px 30px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.creator-footer strong {
+    color: var(--color1);
+}
+
+.loading-text {
+    text-align: center;
+    color: var(--text-muted);
+    width: 100%;
+}
