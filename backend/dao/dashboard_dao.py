@@ -9,7 +9,7 @@ class DashboardDAO:
         try:
             consulta = """
                 SELECT id, titulo, icono, url 
-                FROM modulos_dashboard 
+                FROM z_modulos_dashboard 
                 WHERE activo = TRUE 
                 ORDER BY id ASC;
             """

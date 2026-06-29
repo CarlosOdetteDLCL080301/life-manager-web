@@ -1,15 +1,15 @@
--- 1. Creamos la estructura de la tabla
-CREATE TABLE modulos_dashboard (
-    id SERIAL PRIMARY KEY,
+-- 1. Creamos la estructura de la tabla (Sintaxis MySQL)
+CREATE TABLE z_modulos_dashboard (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     titulo VARCHAR(100) NOT NULL,
     icono VARCHAR(100) NOT NULL,
     url VARCHAR(255) NOT NULL,
     activo BOOLEAN DEFAULT TRUE,
-    creado_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    creado_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 2. Insertamos la información de tus módulos
-INSERT INTO modulos_dashboard (titulo, icono, url) VALUES
+INSERT INTO z_modulos_dashboard (titulo, icono, url) VALUES
 ('Mis deudas', 'fa-solid fa-wallet', 'https://odette.admimpulsa.com.mx/misdeudas'),
 ('Mi progreso Gym', 'fa-duotone fa-solid fa-weight-hanging', '/views/gym/index.html'),
 ('Mi CV', 'fa-solid fa-briefcase', 'https://software-odette.netlify.app/');

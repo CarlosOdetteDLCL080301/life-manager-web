@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from a2wsgi import ASGIMiddleware
 from api.dashboard_router import router as dashboard_router
+from api.compras_router import router as compras_router
 
 app = FastAPI(title="Mi API Modular")
 
@@ -21,6 +22,7 @@ def ruta_de_prueba():
 
 # Conectas la ruta al servidor
 app.include_router(dashboard_router)
+app.include_router(compras_router)
 
 # ESTO ES CLAVE: El adaptador para que tu panel de hosting lo entienda
 application = ASGIMiddleware(app)

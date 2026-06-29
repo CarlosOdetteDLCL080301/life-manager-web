@@ -4,3 +4,5 @@ docker run --name postgres-local \
   -e POSTGRES_PASSWORD=control_local_123 \
   -p 5432:5432 \
   -d postgres:14
+
+docker exec -it postgres-local psql -U odette_local -d dashboard_local

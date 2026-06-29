@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql:8.0.46
+    container_name: control_impulsabtl_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPasswordSeguro123!
+      MYSQL_DATABASE: admimpul_control_impulsabtl
+      MYSQL_USER: admimpul_admin
+      # IMPORTANTE: En Docker Compose, los símbolos de dólar ($) deben escribirse dobles ($$) 
+      # para que no los confunda con una variable de entorno del sistema.
+      MYSQL_PASSWORD: Impulsa_BTL_2026$$Secur3!
+    ports:
+      - "3306:3306"
+    volumes:
+      - impulsabtl_mysql_data:/var/lib/mysql
+    command: --character-set-server=utf8mb3 --collation-server=utf8mb3_unicode_ci
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: control_impulsabtl_pma
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: RootPasswordSeguro123!
+    ports:
+      - "8080:80"
+
+volumes:
+  impulsabtl_mysql_data:

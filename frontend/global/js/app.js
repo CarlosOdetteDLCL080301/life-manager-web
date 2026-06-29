@@ -1,15 +1,11 @@
 /**
- * URL de tu API real.
- * Si la dejas vacía (""), cargará el Mock Data automáticamente.
+ * URL de la API real.
+ * Si dejamos vacía (""), cargará el Mock Data automáticamente.
  */
-const isLocalhost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost" || window.location.hostname === "";
+import { getApiUrl } from './config.js';
 
-const BASE_URL = isLocalhost 
-    ? "http://127.0.0.1:8000"                      // Uvicorn
-    : "https://odette.admimpulsa.com.mx/api";      // Servidor
-
-const API_URL = `${BASE_URL}/dashboard/apps`;
-
+const API_URL = getApiUrl('/dashboard/apps');
+console.log("API_URL:", API_URL);
 /**
  * MOCK DATA: Tus módulos de prueba
  */
