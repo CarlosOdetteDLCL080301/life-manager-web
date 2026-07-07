@@ -2,7 +2,7 @@
  * URL de la API real.
  * Si dejamos vacía (""), cargará el Mock Data automáticamente.
  */
-import { getApiUrl } from './config.js';
+import { getApiUrl } from './nuestroServidorEs.js';
 
 const API_URL = getApiUrl('/dashboard/apps');
 console.log("API_URL:", API_URL);
