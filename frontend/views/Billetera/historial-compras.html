@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial - Mis Deudas</title>
+    <link rel="icon" href="./img/logo.png" type="image/x-icon">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            900: '#000279',
+                            800: '#002890',
+                            600: '#284ca8',
+                            400: '#897dc0',
+                            200: '#c6b3d9',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- Menú Lateral (SOLO PC) -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-slate-100 shadow-sm z-20">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-brand-900"><i class="fa-solid fa-wallet mr-2"></i>MisDeudas</h1>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a href="inicio.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-brand-600 rounded-xl transition-all">
+                <i class="fa-solid fa-house"></i> Inicio
+            </a>
+            <!-- Activo en esta vista -->
+            <a href="historial-compras.html" class="flex items-center gap-3 px-4 py-3 bg-brand-900 text-white rounded-xl shadow-md shadow-brand-400/30 transition-all">
+                <i class="fa-solid fa-clock-rotate-left"></i> Historial
+            </a>
+            <a href="agregar-compra.html" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 hover:text-brand-600 rounded-xl transition-all">
+                <i class="fa-solid fa-plus-circle"></i> Nuevo Gasto
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 h-full overflow-y-auto relative pb-28 md:pb-6">
+        
+        <!-- Header Móvil -->
+        <header class="md:hidden bg-white p-6 rounded-b-3xl shadow-sm border-b border-slate-100 sticky top-0 z-10 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <button onclick="history.back()" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h1 class="text-xl font-bold text-brand-900">Historial</h1>
+            </div>
+        </header>
+
+        <div class="p-6 max-w-6xl mx-auto space-y-6">
+            
+            <!-- Header PC -->
+            <div class="hidden md:flex items-center gap-4 mb-8 mt-4">
+                <button onclick="history.back()" class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-500 hover:text-brand-900 transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div>
+                    <p class="text-slate-400 font-medium">Control financiero</p>
+                    <h2 class="text-3xl font-bold text-brand-900">Historial de Compras</h2>
+                </div>
+            </div>
+
+            <!-- Controles y Filtros -->
+            <section class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 mb-6 space-y-5">
+                <!-- Botones Rápidos -->
+                <div class="flex gap-2 pb-4 border-b border-slate-100 overflow-x-auto scrollbar-hide">
+                    <button onclick="quickFilter('todos')" class="px-5 py-2 bg-brand-900 text-white text-sm font-medium rounded-xl whitespace-nowrap hover:bg-brand-800 transition">Todos</button>
+                    <button onclick="quickFilter('mes_actual')" class="px-5 py-2 bg-slate-100 text-slate-600 text-sm font-medium rounded-xl whitespace-nowrap hover:bg-slate-200 transition">Mes Actual</button>
+                    <button onclick="quickFilter('mes_anterior')" class="px-5 py-2 bg-slate-100 text-slate-600 text-sm font-medium rounded-xl whitespace-nowrap hover:bg-slate-200 transition">Mes Anterior</button>
+                </div>
+
+                <!-- Filtros Complejos -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Buscar Concepto</label>
+                        <input type="text" id="filter-search" placeholder="Ej. Despensa, Spotify..." class="px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none text-sm transition-all">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Tipo de Gasto</label>
+                        <select id="filter-type" class="px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none text-sm transition-all bg-white">
+                            <option value="">Todos los tipos</option>
+                            <option value="TDC">TDC</option>
+                            <option value="Debito">Debito</option>
+                            <option value="MSI">MSI</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Desde</label>
+                        <input type="date" id="filter-date-start" class="px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none text-sm transition-all">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="text-xs font-bold text-slate-500 mb-1 uppercase tracking-wide">Hasta</label>
+                        <input type="date" id="filter-date-end" class="px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-400 focus:border-brand-400 outline-none text-sm transition-all">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contenedor Principal de Datos -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                
+                <!-- VISTA PC: Tabla (Oculta en móviles) -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-4 uppercase tracking-wider text-xs"></th>
+                                <th class="px-6 py-4 uppercase tracking-wider text-xs">Concepto</th>
+                                <th class="px-6 py-4 uppercase tracking-wider text-xs">Tipo</th>
+                                <th class="px-6 py-4 uppercase tracking-wider text-xs">Estado</th>
+                                <th class="px-6 py-4 uppercase tracking-wider text-xs">Fecha y Hora</th>
+                                <th class="px-6 py-4 text-right uppercase tracking-wider text-xs">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="desktop-table-body" class="divide-y divide-slate-100">
+                            <!-- El JS inyecta filas aquí -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- VISTA MÓVIL: Tarjetas (Oculta en PC) -->
+                <div id="mobile-card-container" class="md:hidden flex flex-col divide-y divide-slate-100">
+                    <!-- El JS inyecta tarjetas aquí -->
+                </div>
+
+                <!-- Estado Vacío (Oculto por defecto) -->
+                <div id="empty-state" class="hidden py-16 text-center">
+                    <i class="fa-solid fa-receipt text-5xl text-slate-200 mb-4"></i>
+                    <h3 class="text-xl font-bold text-slate-800">No se encontraron gastos</h3>
+                    <p class="text-sm text-slate-500 mt-2">Prueba ajustando los filtros de búsqueda superior.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Menú Inferior (SOLO MÓVIL) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-brand-900 text-brand-200 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] z-50">
+        <div class="flex justify-around items-center h-20 px-4 relative">
+            <a href="inicio.html" class="flex flex-col items-center hover:text-white w-12 transition-all">
+                <i class="fa-solid fa-house text-xl mb-1"></i>
+            </a>
+            <!-- Historial Icon -->
+            <a href="historial-compras.html" class="flex flex-col items-center text-white w-12 transition-all">
+                <i class="fa-solid fa-table-cells-large text-xl mb-1"></i>
+            </a>
+            
+            <div class="relative -top-6">
+                <a href="agregar-compra.html" class="w-14 h-14 bg-brand-400 text-white rounded-full flex items-center justify-center text-2xl shadow-lg shadow-brand-400/50 border-4 border-brand-900 transform transition active:scale-95">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </div>
+            
+            <a href="historial-compras.html" class="flex flex-col items-center hover:text-white w-12 transition-all">
+                <i class="fa-solid fa-clock-rotate-left text-xl mb-1"></i>
+            </a>
+            <a href="https://software-odette.netlify.app/" class="flex flex-col items-center hover:text-white w-12 transition-all">
+                <i class="fa-solid fa-user text-xl mb-1"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SCRIPT DE LÓGICA Y MOCKS -->
+    <script>
+        // MOCK DE DATOS (Simulando respuesta de FastAPI)
+        const mockCompras = [
+            { id: 1, concepto: "Despensa Walmart", tipo: "TDC", metodo: "Débito BBVA", monto: 1250.00, fecha: "2026-07-12", hora: "14:30", meses_restantes: null, total_meses: null },
+            { id: 2, concepto: "Nintendo Switch OLED", tipo: "MSI", metodo: "TDC Nu", monto: 5999.00, fecha: "2026-07-10", hora: "18:15", meses_restantes: 11, total_meses: 12 },
+            { id: 3, concepto: "Café Starbucks", tipo: "Debito", metodo: "Efectivo", monto: 120.50, fecha: "2026-07-09", hora: "08:45", meses_restantes: null, total_meses: null },
+            { id: 4, concepto: "Pago Internet Izzi", tipo: "TDC", metodo: "TDC Rappi", monto: 550.00, fecha: "2026-06-28", hora: "10:00", meses_restantes: null, total_meses: null },
+            { id: 5, concepto: "Audífonos Sony", tipo: "MSI", metodo: "TDC Nu", monto: 2500.00, fecha: "2026-05-15", hora: "16:20", meses_restantes: 1, total_meses: 3 }
+        ];
+
+        // CONFIGURACIÓN DE ICONOS Y COLORES POR TIPO
+        const typeConfig = {
+            "TDC": { icon: "fa-house", color: "text-blue-500", bg: "bg-blue-50" },
+            "Debito": { icon: "fa-bolt", color: "text-amber-500", bg: "bg-amber-50" },
+            "MSI": { icon: "fa-calendar-days", color: "text-purple-500", bg: "bg-purple-50" }
+        };
+
+        const formatMoney = (amount) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+
+        function formatearFecha(fecha){
+            const fechaObjeto = new Date(fecha);
+            const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+            
+            // Desglosamos la fecha en sus partes
+            const partes = new Intl.DateTimeFormat('es-ES', opciones).formatToParts(fechaObjeto);
+            
+            // Extraemos el valor de cada parte
+            const dia = partes.find(p => p.type === 'day').value;
+            const anio = partes.find(p => p.type === 'year').value;
+            let mes = partes.find(p => p.type === 'month').value;
+            
+            // Convertimos la primera letra del mes a mayúscula
+            mes = mes.charAt(0).toUpperCase() + mes.slice(1);
+            
+            // Armamos el string uniendo las partes con barras
+            return `${dia}/${mes}/${anio}`;
+        }
+
+        // RENDERIZADO
+        function renderData(data) {
+            const tableBody = document.getElementById('desktop-table-body');
+            const cardContainer = document.getElementById('mobile-card-container');
+            const emptyState = document.getElementById('empty-state');
+
+            tableBody.innerHTML = '';
+            cardContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            data.forEach(item => {
+                const conf = typeConfig[item.tipo];
+                const estadoBadge = item.tipo === 'MSI' 
+                    ? `<span class="px-2.5 py-1 bg-amber-100 text-amber-700 text-xs rounded-lg font-bold">Restan ${item.meses_restantes}/${item.total_meses} meses</span>`
+                    : `<span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs rounded-lg font-bold">Liquidado</span>`;
+
+                // Render PC
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors duration-200";
+                tr.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center ${conf.bg} ${conf.color} shadow-sm">
+                            <i class="fa-solid ${conf.icon}"></i>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-slate-800">
+                        ${item.concepto}
+                        
+                    </td>
+                    <td class="px-6 py-4 text-slate-600 font-medium"><i class="fa-solid fa-credit-card text-slate-400 mr-2"></i>${item.tipo}</td>
+                    <td class="px-6 py-4">${estadoBadge}</td>
+                    <td class="px-6 py-4 text-slate-500 font-medium">${formatearFecha(item.fecha)} <span class="text-xs ml-1 text-slate-400 font-normal">${item.hora}</span></td>
+                    <td class="px-6 py-4 text-right font-black text-slate-900 text-lg">${formatMoney(item.monto)}</td>
+                `;
+                tableBody.appendChild(tr);
+
+                // Render Móvil
+                const card = document.createElement('div');
+                card.className = "p-5 flex items-center justify-between";
+                card.innerHTML = `
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl shrink-0 flex items-center justify-center mt-1 ${conf.bg} ${conf.color} shadow-sm">
+                            <i class="fa-solid ${conf.icon} text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-600 text-[10px] uppercase tracking-wider rounded-lg font-bold mb-1.5">${item.tipo}</span>
+                            <h3 class="font-bold text-slate-900 leading-tight">${item.concepto}</h3>
+                            <div class="flex items-center text-xs text-slate-500 mt-2 gap-2 font-medium">
+                                <span><i class="fa-solid fa-wallet mr-1 text-slate-400"></i>${item.metodo}</span>
+                                <span class="text-slate-300">•</span>
+                                <span><i class="fa-regular fa-clock mr-1 text-slate-400"></i>${item.hora}</span>
+                            </div>
+                            <div class="flex items-center text-xs text-slate-500 mt-1 gap-2 font-medium">
+                                <span><i class="fa-regular fa-calendar mr-1 text-slate-400"></i>${formatearFecha(item.fecha)}</span>
+                                ${item.tipo === 'MSI' ? `<span class="text-slate-300">•</span> <span class="text-amber-600 font-bold">Restan ${item.meses_restantes} meses</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right pl-3 shrink-0">
+                        <span class="block text-xl font-black text-slate-900 tracking-tight">${formatMoney(item.monto)}</span>
+                    </div>
+                `;
+                cardContainer.appendChild(card);
+            });
+        }
+
+        // LÓGICA DE FILTRADO
+        function applyFilters() {
+            const searchTerm = document.getElementById('filter-search').value.toLowerCase();
+            const typeTerm = document.getElementById('filter-type').value;
+            const dateStart = document.getElementById('filter-date-start').value;
+            const dateEnd = document.getElementById('filter-date-end').value;
+
+            const filteredData = mockCompras.filter(item => {
+                const matchSearch = item.concepto.toLowerCase().includes(searchTerm);
+                const matchType = typeTerm === "" || item.tipo === typeTerm;
+                
+                let matchDate = true;
+                if (dateStart && dateEnd) {
+                    matchDate = item.fecha >= dateStart && item.fecha <= dateEnd;
+                } else if (dateStart) {
+                    matchDate = item.fecha >= dateStart;
+                } else if (dateEnd) {
+                    matchDate = item.fecha <= dateEnd;
+                }
+
+                return matchSearch && matchType && matchDate;
+            });
+            renderData(filteredData);
+        }
+
+        // FILTROS RÁPIDOS
+        function quickFilter(action) {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('filter-type').value = '';
+            document.getElementById('filter-date-start').value = '';
+            document.getElementById('filter-date-end').value = '';
+
+            // Asumiendo el año 2026 según los mock data
+            if (action === 'mes_actual') {
+                document.getElementById('filter-date-start').value = '2026-07-01';
+                document.getElementById('filter-date-end').value = '2026-07-31';
+            } else if (action === 'mes_anterior') {
+                document.getElementById('filter-date-start').value = '2026-06-01';
+                document.getElementById('filter-date-end').value = '2026-06-30';
+            }
+            applyFilters();
+        }
+
+        // Eventos
+        document.getElementById('filter-search').addEventListener('input', applyFilters);
+        document.getElementById('filter-type').addEventListener('change', applyFilters);
+        document.getElementById('filter-date-start').addEventListener('change', applyFilters);
+        document.getElementById('filter-date-end').addEventListener('change', applyFilters);
+
+        // Inicializar
+        renderData(mockCompras);
+    </script>
+</body>
+</html>
