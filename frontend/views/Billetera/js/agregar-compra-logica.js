@@ -33,7 +33,7 @@ function configurarFechaPorDefecto() {
 // 2. Lógica visual: Mostrar/Ocultar campo de meses
 function configurarEventosUI() {
     selectTipo.addEventListener('change', (e) => {
-        if (e.target.value === 'A meses') {
+        if (e.target.value === 'MSI') {
             contenedorMeses.classList.remove('hidden');
             inputMeses.setAttribute('required', 'true');
             // Pequeña animación para que no aparezca de golpe
@@ -101,7 +101,7 @@ form.addEventListener('submit', async (e) => {
         monto: parseFloat(formData.get('monto')),
         fecha: formData.get('fecha'),
         comprador_id: parseInt(formData.get('comprador')),
-        meses_restantes: formData.get('tipo') === 'A meses' ? parseInt(formData.get('meses_restantes')) : null
+        meses_restantes: formData.get('tipo') === 'MSI' ? parseInt(formData.get('meses_restantes')) : null
     };
 
     // Ejecutar la petición POST
