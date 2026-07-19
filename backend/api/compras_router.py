@@ -22,7 +22,6 @@ def crear_compra(compra: CompraCreate):
         raise HTTPException(status_code=500, detail="Error interno del servidor al guardar la compra")
     
 @router.get("/historial")
-
 def obtener_historial_compras():
     try:
         historial = HistorialComprasService.obtener_historial_compras()

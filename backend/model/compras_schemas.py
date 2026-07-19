@@ -10,3 +10,4 @@ class CompraCreate(BaseModel):
     monto: float = Field(..., gt=0)
     comprador_id: int = 1 # Por defecto asignará tu ID (1)
     meses_restantes: Optional[int] = None
+    total_meses: Optional[int] = None

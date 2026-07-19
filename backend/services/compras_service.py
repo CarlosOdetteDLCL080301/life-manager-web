@@ -5,7 +5,7 @@ class ComprasService:
     @staticmethod
     def guardar_compra(compra: CompraCreate):
         # 1. Validación de reglas de negocio
-        if compra.tipo == "A meses" and (compra.meses_restantes is None or compra.meses_restantes <= 0):
+        if (compra.tipo == "A meses" or compra.tipo == "MSI") and (compra.meses_restantes is None or compra.meses_restantes <= 0):
             raise ValueError("Un gasto 'A meses' requiere especificar cuántos meses restan de forma válida.")
         
         # 2. Convertir el esquema a diccionario para el DAO

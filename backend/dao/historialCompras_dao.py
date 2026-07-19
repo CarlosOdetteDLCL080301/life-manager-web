@@ -8,7 +8,7 @@ class HistorialComprasDAO:
 
         try:
             consulta = """
-                SELECT id, concepto, tipo, fecha, monto, comprador_id, meses_restantes, creado_at
+                SELECT id, concepto, tipo, fecha, monto, comprador_id, meses_restantes, total_meses, creado_at
                 FROM z_historial_compras
                 ORDER BY fecha DESC, creado_at DESC;
             """

@@ -9,8 +9,8 @@ class ComprasDAO:
         try:
             consulta = """
                 INSERT INTO z_historial_compras 
-                (concepto, tipo, fecha, monto, comprador_id, meses_restantes) 
-                VALUES (%(concepto)s, %(tipo)s, %(fecha)s, %(monto)s, %(comprador_id)s, %(meses_restantes)s);
+                (concepto, tipo, fecha, monto, comprador_id, meses_restantes, total_meses) 
+                VALUES (%(concepto)s, %(tipo)s, %(fecha)s, %(monto)s, %(comprador_id)s, %(meses_restantes)s, %(meses_restantes)s);
             """
             cursor.execute(consulta, datos)
             # Retornamos el ID autoincrementable que MySQL acaba de generar
